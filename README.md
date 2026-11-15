@@ -12,4 +12,5 @@ change them.
   `pcf-outside-contribution-review` ruleset: a pull request from someone without
   write access to the repository needs two approvals from people with write
   access on its current head commit. A maintainer re-runs the check after the
-  last approval.
+  last approval. Dependabot pull requests follow the repository's own review
+  rules.
