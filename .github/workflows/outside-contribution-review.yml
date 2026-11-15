@@ -1,11 +1,11 @@
 # Required on pull requests across the organisation by the
 # pcf-outside-contribution-review ruleset.
 #
-# A pull request opened by someone with write access to the repository passes.
-# One opened by anyone else passes only once REQUIRED people with write access
-# have approved its current head commit. Ruleset workflows run only when a pull
-# request is opened, reopened or pushed to, so after the last approval a
-# maintainer re-runs this check.
+# A pull request opened by someone with write access to the repository, or by
+# Dependabot, passes. One opened by anyone else passes only once REQUIRED people
+# with write access have approved its current head commit. Ruleset workflows
+# run only when a pull request is opened, reopened or pushed to, so after the
+# last approval a maintainer re-runs this check.
 #
 # It runs from this repository, never checks out the pull request, and reads
 # only through the API, so pull_request_target is safe here.
@@ -46,6 +46,13 @@ jobs:
 
           if can_write "$author"; then
             echo "$author has write access: the repository's own review rules apply."
+            exit 0
+          fi
+
+          # Dependabot branches live in this repository, and only GitHub's app
+          # can open a pull request as dependabot[bot].
+          if [ "$author" = "dependabot[bot]" ]; then
+            echo "Dependabot pull request: the repository's own review rules apply."
             exit 0
           fi
 
